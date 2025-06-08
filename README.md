@@ -1,6 +1,6 @@
 # Product_Analysis
 
-_Questions file contain two challenges_ 
+_Questions.pdf file contain two challenges_ 
 
 **To run challenge one:**
 
