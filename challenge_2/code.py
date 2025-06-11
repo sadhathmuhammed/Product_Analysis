@@ -2,9 +2,6 @@ import requests
 from typing import Any, Dict, List
 
 
-# API_URL = "https://dev.shopalyst.com/shopalyst-service/v1/products/12C7BFC3752D4209"
-
-
 def fetch_product_data(product_id: str) -> Dict[str, Any]:
     """
     Fetch product data from the Shopalyst Product Knowledge Graph API.
