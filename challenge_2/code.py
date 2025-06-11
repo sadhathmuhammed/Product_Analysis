@@ -2,7 +2,7 @@ import requests
 from typing import Any, Dict, List
 
 
-API_URL = "https://dev.shopalyst.com/shopalyst-service/v1/products/{}"
+# API_URL = "https://dev.shopalyst.com/shopalyst-service/v1/products/12C7BFC3752D4209"
 
 
 def fetch_product_data(product_id: str) -> Dict[str, Any]:
@@ -10,7 +10,8 @@ def fetch_product_data(product_id: str) -> Dict[str, Any]:
     Fetch product data from the Shopalyst Product Knowledge Graph API.
     """
     try:
-        response = requests.get(API_URL.format(product_id), timeout=10)
+        API_URL = f"https://dev.shopalyst.com/shopalyst-service/v1/products/{product_id}"
+        response = requests.get(API_URL, timeout=10)
         response.raise_for_status()
         return response.json()
     except requests.RequestException as error:
@@ -20,21 +21,27 @@ def fetch_product_data(product_id: str) -> Dict[str, Any]:
 
 def extract_sku_details(product_data: Dict[str, Any]) -> List[Dict[str, Any]]:
     """
-    Extract SKU details such as skuId, shade, offerPrice, and title from the product data.
+    Extract SKU details from `skuSet` key.
     """
-    skus = product_data.get("skus", [])
+    sku_set = product_data.get("skuSet", [])
+    title = product_data.get("title", "N/A")
     sku_details = []
-    for sku in skus:
+
+    for sku in sku_set:
         sku_id = sku.get("skuId", "N/A")
-        shade = sku.get("shade", "N/A")
         offer_price = sku.get("offerPrice", "N/A")
-        title = sku.get("title", "N/A")
+        sale_price = sku.get("salePrice", "N/A")
+        attributes = sku.get("attributes", {})
+        shade = attributes.get("1", "N/A")  # "1" corresponds to shade
+
         sku_details.append({
             "skuId": sku_id,
             "shade": shade,
             "offerPrice": offer_price,
-            "title": title
+            "salePrice": sale_price,
+            "title": f"{title} - {shade}"
         })
+
     return sku_details
 
 
