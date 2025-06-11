@@ -15,13 +15,11 @@ def parse_csv_file(file_path: str) -> Dict[str, Dict[str, int]]:
             brand = row.get("Brand", "").strip().lower()
             try:
                 view_count = int(row.get("Product View Count", "0"))
-            except ValueError:
-                continue  # Skip rows with invalid data
+            except ValueError as error:
+                print(error)
 
             parent_brand_views[parent_org][brand] += view_count
-
     return parent_brand_views
-
 
 def compute_totals(data: Dict[str, Dict[str, int]]) -> Dict[str, int]:
     """
